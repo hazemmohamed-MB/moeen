@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Downloaded model files (fetch with: python scripts/download_model.py)
+models/*.task
+
+# Local runtime data (database, recordings, self-test output)
+data/

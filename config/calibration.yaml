@@ -1,0 +1,47 @@
+# Moeen calibration - the detection thresholds that depend on the camera setup.
+#
+# These are the ONLY copies of these values (config/default.yaml points here). Loaded
+# automatically after default.yaml; skip with --no-calibration, use another file with
+# --calibration PATH. Check any change with:
+#
+#     python scripts/calibrate.py --synthetic            # simulated webcam conditions
+#     python scripts/calibrate.py data/recordings/*.jsonl  # your own recorded scenarios
+#
+# Units: "torso lengths" = the person's shoulder-to-hip distance, so values do not depend
+# on how far the person stands from the camera. The score is a rule-based system score,
+# not a medical probability. Academic prototype: no value here guarantees real-world safety.
+
+profile: laptop-webcam-demo
+
+values:
+  # History window: how far back the detector looks when it decides, at the end of the
+  # recovery window, whether the person is still down and still (share of low/horizontal
+  # frames, mean motion).
+  decision_history_seconds: 3.0
+
+  # Fall velocity: downward body-center speed that starts a possible fall (torso lengths/s).
+  fall_velocity_threshold: 2.0
+
+  # Torso angle: rotation toward horizontal that must come with the fast drop (degrees)...
+  torso_angle_change_deg: 35.0
+  # ...and the tilt from vertical beyond which the body counts as horizontal (degrees).
+  torso_horizontal_deg: 60.0
+
+  # Low posture: hips this many torso lengths below standing height = floor level.
+  low_posture_hip_drop: 1.2
+
+  # Recovery window: seconds after a confirmed fall for the person to get up.
+  recovery_window_seconds: 10.0
+
+  # Immobility duration: lying and not moving this long raises an alert (seconds).
+  # Halved, and HIGH severity, when it follows a fall candidate.
+  immobility_alert_seconds: 60.0
+
+  # Stillness: how little movement counts as "not moving" (torso lengths, RMS keypoint
+  # displacement over 1 s). Both must stay ABOVE the jitter the camera adds to a person who
+  # is perfectly still - watch the "stillness" line of the debug overlay (d) while lying still.
+  fall_still_motion_threshold: 0.10     # end of the recovery window: not getting up
+  immobility_motion_threshold: 0.06     # immobility timer: not moving
+
+  # Alert score threshold: minimum system score (0-1) for the normal fall escalation.
+  alert_score_threshold: 0.6

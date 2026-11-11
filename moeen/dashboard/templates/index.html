@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moeen</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%232f7d5b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body data-status-poll-ms="{{ status_poll_ms }}"
+      data-events-poll-ms="{{ events_poll_ms }}"
+      data-preview-enabled="{{ 'true' if preview_enabled else 'false' }}">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-name">Moeen</span>
+      <span class="brand-sub">Assistance monitor</span>
+    </div>
+    <p class="link" id="link" data-ok="unknown" role="status">Connecting</p>
+  </header>
+
+  <main>
+    <section class="band" id="band" data-tone="idle" aria-live="polite" aria-atomic="true">
+      <div class="band-text">
+        <h1 id="band-title">Connecting to Moeen</h1>
+        <p id="band-detail">Waiting for the first update from the camera loop.</p>
+      </div>
+      <div class="band-actions" id="band-actions" hidden>
+        <button type="button" class="btn btn-solid" id="act-assist">Assistance recorded</button>
+        <button type="button" class="btn btn-line" id="act-resolve">Resolve</button>
+      </div>
+    </section>
+
+    <div class="layout">
+      <section class="panel panel-camera" aria-labelledby="camera-h">
+        <h2 id="camera-h">Camera</h2>
+        <div class="frame">
+          <img id="preview" alt="Camera view with the detected skeleton" hidden>
+          <p class="frame-empty" id="preview-empty">No camera picture yet.</p>
+        </div>
+        <p class="note">The picture is processed by Moeen on this computer. The browser never opens the camera.</p>
+      </section>
+
+      <section class="panel panel-now" aria-labelledby="now-h">
+        <h2 id="now-h">Right now</h2>
+
+        <div class="score">
+          <div class="meter" id="meter" role="meter" aria-label="System score"
+               aria-valuemin="0" aria-valuemax="1" aria-valuenow="0">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <p class="score-text"><strong id="score-value">0.00</strong> system score
+            <span class="muted">rule-based, not a medical probability</span></p>
+        </div>
+
+        <dl class="facts">
+          <div><dt>State</dt><dd id="f-state">Unknown</dd></div>
+          <div><dt>Condition</dt><dd id="f-condition">None</dd></div>
+          <div><dt>Severity</dt><dd><span class="sev" id="f-severity" data-level="NONE">None</span></dd></div>
+          <div><dt>Duration</dt><dd id="f-duration">Not applicable</dd></div>
+          <div><dt>Next</dt><dd id="f-next">Nothing pending</dd></div>
+          <div><dt>Event time</dt><dd id="f-event-time">No events yet</dd></div>
+          <div><dt>Person</dt><dd id="f-person">Unknown</dd></div>
+          <div><dt>Sound</dt><dd id="f-sound">Unknown</dd></div>
+        </dl>
+
+        <details class="parts">
+          <summary>What the score is made of</summary>
+          <ul class="parts-list" id="parts"></ul>
+        </details>
+      </section>
+    </div>
+
+    <section class="panel panel-history" aria-labelledby="history-h">
+      <div class="history-head">
+        <h2 id="history-h">Recent events</h2>
+        <p class="muted" id="history-count"></p>
+        <label class="toggle"><input type="checkbox" id="open-only"> Open only</label>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Time</th><th scope="col">Event</th><th scope="col">Severity</th>
+              <th scope="col" class="num">Score</th><th scope="col" class="num">Duration</th>
+              <th scope="col">Status</th><th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="events"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="events-empty" hidden>No events yet. Falls, long lying and long stillness will appear here.</p>
+    </section>
+  </main>
+
+  <footer class="foot">Moeen {{ version }}. Academic prototype, not a medical device.</footer>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

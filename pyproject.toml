@@ -1,0 +1,14 @@
+[project]
+name = "moeen"
+version = "0.1.0"
+description = "Moeen - webcam-based assistance-detection prototype (graduation project)"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+filterwarnings = [
+    # protobuf/absl emit deprecation noise on some versions; it is not ours.
+    "ignore::DeprecationWarning:google.*",
+]

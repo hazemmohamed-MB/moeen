@@ -1,0 +1,17 @@
+# Moeen - Phase 1 runtime dependencies.
+# Tested with Python 3.13 on Linux; wheels exist for Windows x64 and Apple-Silicon macOS on Python 3.11-3.13.
+#
+# MediaPipe >= 0.10.30 removed the legacy `mp.solutions.pose` API.
+# Moeen uses the current Tasks API: mediapipe.tasks.python.vision.PoseLandmarker.
+mediapipe==1.0.1
+
+# MediaPipe itself depends on the *contrib* OpenCV build.
+# Do NOT also install `opencv-python` or `opencv-python-headless`: they all provide
+# the same `cv2` module and overwrite each other.
+opencv-contrib-python==5.0.0.93
+
+numpy>=1.26,<3
+PyYAML>=6.0,<7
+
+# Local API + dashboard (Phase 6). The dashboard itself needs no extra packages or CDNs.
+Flask==3.1.3
